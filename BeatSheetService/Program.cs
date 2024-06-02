@@ -22,19 +22,19 @@ Log.Logger = new LoggerConfiguration()
 // register logger and configuration for DI
 builder.Services.AddSingleton(Log.Logger);
 builder.Services.AddSingleton(typeof(IConfiguration), builder.Configuration);
+builder.Services.Configure<ApiBehaviorOptions>(x => x.SuppressModelStateInvalidFilter = true);
 
 // configure and register mongo DB beat sheet collection for DI
 builder.Services.ConfigureDatabase(builder.Configuration);
 
 // register services/repositories for DI
-builder.Services.AddSingleton<IBeatSheetService, BeatSheetService.Services.BeatSheetService>();
+builder.Services.AddTransient<IBeatSheetService, BeatSheetService.Services.BeatSheetService>();
 builder.Services.AddTransient<IBeatService, BeatService>();
 builder.Services.AddTransient<IActService, ActService>();
-builder.Services.AddTransient<IAiService, AiService>();
+builder.Services.AddSingleton<IAiService, AiService>();
 builder.Services.AddSingleton<IBeatSheetRepository, BeatSheetRepository>();
 
 // register controllers and swagger
-builder.Services.Configure<ApiBehaviorOptions>(x => x.SuppressModelStateInvalidFilter = true);
 builder.Services.AddControllers(options => { options.AllowEmptyInputInBodyModelBinding = true; });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

@@ -39,7 +39,7 @@ public class BeatSheetController(IBeatSheetService beatSheetService) : Controlle
     /// <summary>
     /// Delete a beat sheet by its ID.
     /// </summary>
-    [HttpDelete("{id:guid}")]
-    public void Delete(Guid beatSheetId) => 
+    [HttpDelete("{beatSheetId:guid}")]
+    public Task Delete(Guid beatSheetId) => 
         beatSheetService.Delete(beatSheetId);
 }
