@@ -1,6 +1,28 @@
-﻿services:
+﻿version: '3.8'
+
+services:
   beatsheetservice:
     image: beatsheetservice
     build:
       context: .
       dockerfile: BeatSheetService/Dockerfile
+    environment:
+      - DBCONNSTRING=mongodb://mongo:27017
+    ports:
+      - "80:80"
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
+
