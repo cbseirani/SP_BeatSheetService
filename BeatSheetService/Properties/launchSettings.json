@@ -17,7 +17,7 @@
       "applicationUrl": "http://localhost:8080",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DUPLOCORE_DBCONNSTRING": "Development"
+        "DBCONNSTRING": "mongodb://localhost:27017/"
       }
     },
     "https": {

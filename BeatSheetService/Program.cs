@@ -3,6 +3,7 @@ using BeatSheetService.Extensions;
 using BeatSheetService.Middleware;
 using BeatSheetService.Repositories;
 using BeatSheetService.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
@@ -29,12 +30,13 @@ builder.Services.ConfigureDatabase(builder.Configuration);
 builder.Services.AddSingleton<IBeatSheetService, BeatSheetService.Services.BeatSheetService>();
 builder.Services.AddTransient<IBeatService, BeatService>();
 builder.Services.AddTransient<IActService, ActService>();
+builder.Services.AddTransient<IAiService, AiService>();
 builder.Services.AddSingleton<IBeatSheetRepository, BeatSheetRepository>();
 
 // register controllers and swagger
-builder.Services.AddControllers();
+builder.Services.Configure<ApiBehaviorOptions>(x => x.SuppressModelStateInvalidFilter = true);
+builder.Services.AddControllers(options => { options.AllowEmptyInputInBodyModelBinding = true; });
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
@@ -44,7 +46,7 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Allows creators to structure their content into a 'beat sheet,' a storytelling tool used to outline various elements like scenes, dialogues, or musical cues."
     });
     
-    // Include the XML comments file
+    // include XML comments file
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);
@@ -57,7 +59,5 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseExceptionMiddleware();
-app.UseHttpsRedirection();
-app.UseAuthorization();
 app.MapControllers();
 app.Run();

@@ -10,6 +10,7 @@ public class ActController(IActService actService) : ControllerBase
 {
     /// <summary>
     /// Add an act to a specific beat.
+    /// Returns the new act and the suggested next act.
     /// </summary>
     [HttpPost]
     public Task<ActDto> Create(Guid beatSheetId, Guid beatId, [FromBody] ActDto act) =>
@@ -17,6 +18,7 @@ public class ActController(IActService actService) : ControllerBase
     
     /// <summary>
     /// Update an act in a specific beat.
+    /// Returns the updated act and the suggested next act.
     /// </summary>
     [HttpPut("{actId}")]
     public Task<ActDto> Update(Guid beatSheetId, Guid beatId, Guid actId, [FromBody] ActDto act) =>

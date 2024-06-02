@@ -9,42 +9,51 @@ public interface IBeatService
     void Delete(Guid beatSheetId, Guid beatId);
 }
 
-
-public class BeatService(IBeatSheetService beatSheetService) : IBeatService
+public class BeatService(IBeatSheetService beatSheetService, IAiService aiService) : IBeatService
 {
     public async Task<BeatDto> Create(Guid beatSheetId, BeatDto beat)
     {
+        // validate
         var beatSheet = await beatSheetService.Get(beatSheetId);
-        beatSheet.Beats.Add(beat);
         
+        // add
+        beatSheet.Beats.Add(beat);
         await beatSheetService.Update(beatSheetId, beatSheet);
         
-        beat.SuggestedNextBeat = new BeatDto();
+        // get suggested
+        beat.SuggestedNextBeat = await aiService.SuggestNextBeat();
+        
         return beat;
     }
     
     public async Task<BeatDto> Update(Guid beatSheetId, Guid beatId, BeatDto beat)
     {
+        // validate
         var beatSheet = await beatSheetService.Get(beatSheetId);
         var existingBeat = beatSheet.Beats.FirstOrDefault(x => x.Id.Equals(beatId));
         if (existingBeat is null)
             throw new NotFoundException($"Beat {beatId} on beat sheet {beatSheetId} not found!");
 
+        // update
         beatSheet.Beats.Remove(existingBeat);
         beatSheet.Beats.Add(beat);
         await beatSheetService.Update(beatSheetId, beatSheet);
+
+        // get suggested
+        beat.SuggestedNextBeat = await aiService.SuggestNextBeat();
         
-        beat.SuggestedNextBeat = new BeatDto();
         return beat;
     }
     
     public async void Delete(Guid beatSheetId, Guid beatId)
     {
+        // validate
         var beatSheet = await beatSheetService.Get(beatSheetId);
         var existingBeat = beatSheet.Beats.FirstOrDefault(x => x.Id.Equals(beatId));
         if (existingBeat is null)
             throw new NotFoundException($"Beat {beatId} on beat sheet {beatSheetId} not found!");
         
+        // delete
         beatSheet.Beats.Remove(existingBeat);
         await beatSheetService.Update(beatSheetId, beatSheet);
     }

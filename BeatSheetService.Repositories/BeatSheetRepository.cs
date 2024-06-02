@@ -14,27 +14,25 @@ public interface IBeatSheetRepository
 
 }
 
-public class BeatSheetRepository() : IBeatSheetRepository
+public class BeatSheetRepository(IMongoCollection<BeatSheet> beatSheetCollection) : IBeatSheetRepository
 {
-    private readonly IMongoCollection<BeatSheet> _beatSheetCollection = null;//database.GetCollection<BeatSheet>("BeatSheets");
-
     public async Task<IEnumerable<BeatSheetDto>> List()
     {
-        var list = await _beatSheetCollection.Find(_ => true).ToListAsync();
+        var list = await beatSheetCollection.Find(_ => true).ToListAsync();
         return list.Adapt<IEnumerable<BeatSheetDto>>();
     }
     
     public async Task<BeatSheetDto> Get(Guid id)
     {
         var filter = Builders<BeatSheet>.Filter.Eq(bs => bs.Id, id);
-        var beatSheet = await _beatSheetCollection.Find(filter).FirstOrDefaultAsync();
+        var beatSheet = await beatSheetCollection.Find(filter).FirstOrDefaultAsync();
         return beatSheet.Adapt<BeatSheetDto>();
     }
     
     public async Task<BeatSheetDto> Create(BeatSheetDto beatSheet)
     {
         var newBeatSheet = beatSheet.Adapt<BeatSheet>();
-        await _beatSheetCollection.InsertOneAsync(newBeatSheet);
+        await beatSheetCollection.InsertOneAsync(newBeatSheet);
         return newBeatSheet.Adapt<BeatSheetDto>();
     }
 
@@ -42,13 +40,13 @@ public class BeatSheetRepository() : IBeatSheetRepository
     {
         var updatedBeatSheet = beatSheet.Adapt<BeatSheet>();
         var filter = Builders<BeatSheet>.Filter.Eq(bs => bs.Id, updatedBeatSheet.Id);
-        await _beatSheetCollection.ReplaceOneAsync(filter, updatedBeatSheet);
+        await beatSheetCollection.ReplaceOneAsync(filter, updatedBeatSheet);
         return updatedBeatSheet.Adapt<BeatSheetDto>();
     }
 
     public async Task Delete(Guid id)
     {
         var filter = Builders<BeatSheet>.Filter.Eq(bs => bs.Id, id);
-        await _beatSheetCollection.DeleteOneAsync(filter);
+        await beatSheetCollection.DeleteOneAsync(filter);
     }
 }

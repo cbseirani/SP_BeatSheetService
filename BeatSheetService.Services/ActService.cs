@@ -9,8 +9,7 @@ public interface IActService
     void Delete(Guid beatSheetId, Guid beatId, Guid actId);
 }
 
-
-public class ActService(IBeatService beatService) : IActService
+public class ActService(IBeatService beatService, IAiService aiService) : IActService
 {
     public async Task<ActDto> Create(Guid beatSheetId, Guid beatId, ActDto act)
     {

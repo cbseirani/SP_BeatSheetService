@@ -10,6 +10,7 @@ public class BeatController(IBeatService beatService) : ControllerBase
 {
     /// <summary>
     /// Add a beat to a specific beat sheet.
+    /// Returns the new beat and the suggested next beat.
     /// </summary>
     [HttpPost]
     public Task<BeatDto> Create(Guid beatSheetId, [FromBody] BeatDto beat) =>
@@ -17,6 +18,7 @@ public class BeatController(IBeatService beatService) : ControllerBase
 
     /// <summary>
     /// Update a beat in a specific beat sheet.
+    /// Returns the updated beat and the suggested next beat.
     /// </summary>
     [HttpPut("{beatId}")]
     public Task<BeatDto> Update(Guid beatSheetId, Guid beatId, [FromBody] BeatDto beat) =>

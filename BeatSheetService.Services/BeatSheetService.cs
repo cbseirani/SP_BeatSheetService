@@ -18,9 +18,11 @@ public class BeatSheetService(IBeatSheetRepository beatSheetRepository) : IBeatS
     
     public async Task<BeatSheetDto> Get(Guid beatSheetId)
     {
+        // validate
         var beatSheet = await beatSheetRepository.Get(beatSheetId);
         if (beatSheet is null)
             throw new NotFoundException($"Beat sheet {beatSheetId} not found!");
+        
         return beatSheet;
     }
 
@@ -29,15 +31,20 @@ public class BeatSheetService(IBeatSheetRepository beatSheetRepository) : IBeatS
     
     public async Task<BeatSheetDto> Update(Guid beatSheetId, BeatSheetDto beatSheet)
     {
-        await Get(beatSheetId); // check to see if beat sheet exists before tyring to update
-        beatSheet.Id = beatSheetId;
+        // validate
+        await Get(beatSheetId);
         
+        // update
+        beatSheet.Id = beatSheetId;
         return await beatSheetRepository.Update(beatSheet);
     }
     
     public async void Delete(Guid beatSheetId)
     {
-        await Get(beatSheetId); // check to see if beat sheet exists before tyring to delete
+        // validate
+        await Get(beatSheetId);
+        
+        // delete
         await beatSheetRepository.Delete(beatSheetId);
     }
 }
