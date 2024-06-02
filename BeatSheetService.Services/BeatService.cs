@@ -30,7 +30,7 @@ public class BeatService(IBeatSheetService beatSheetService, IAiService aiServic
         var beatSheet = await beatSheetService.Get(beatSheetId);
         
         logger.LogInformation("Creating beat");
-        beat.Id = Guid.NewGuid();
+        beat.Id = Guid.NewGuid().ToString();
         beat.Acts = new List<ActDto>();
         
         return await AddBeatAndSuggestNextBeat(beatSheet, beat);
@@ -57,9 +57,9 @@ public class BeatService(IBeatSheetService beatSheetService, IAiService aiServic
 
     private async Task<BeatDto> AddBeatAndSuggestNextBeat(BeatSheetDto beatSheet, BeatDto beat)
     {
-        beat.Timestamp ??= DateTimeOffset.UtcNow;
+        beat.Timestamp = DateTimeOffset.UtcNow;
         beatSheet.Beats.Add(beat);
-        await beatSheetService.Update(beatSheet.Id, beatSheet);
+        await beatSheetService.Update(Guid.Parse(beatSheet.Id), beatSheet);
         
         logger.LogInformation("Suggesting next beat");
         beat.SuggestedNextBeat = await aiService.SuggestNextBeat(beatSheet.Beats, beat);

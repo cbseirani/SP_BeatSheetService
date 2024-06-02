@@ -30,7 +30,7 @@ public class ActService(IBeatService beatService, IAiService aiService, ILogger<
         var (beatSheet, beat) = await beatService.Get(beatSheetId, beatId);
 
         logger.LogInformation($"Creating act");
-        act.Id = Guid.NewGuid();
+        act.Id = Guid.NewGuid().ToString();
         
         return await AddActAndSuggestNextAct(beatSheet, beat, act);
     }
@@ -51,14 +51,14 @@ public class ActService(IBeatService beatService, IAiService aiService, ILogger<
         
         logger.LogInformation($"Deleting act {actId}");
         beat.Acts.Remove(existingAct);
-        await beatService.Update(beatSheet.Id, beat.Id, beat);
+        await beatService.Update(Guid.Parse(beatSheet.Id), Guid.Parse(beat.Id), beat);
     }
 
     private async Task<ActDto> AddActAndSuggestNextAct(BeatSheetDto beatSheet, BeatDto beat, ActDto act)
     {
-        act.Timestamp ??= DateTimeOffset.UtcNow;
+        act.Timestamp = DateTimeOffset.UtcNow;
         beat.Acts.Add(act);
-        await beatService.Update(beatSheet.Id, beat.Id, beat);
+        await beatService.Update(Guid.Parse(beatSheet.Id), Guid.Parse(beat.Id), beat);
         
         logger.LogInformation("Suggesting next act");
         act.SuggestedNextAct = await aiService.SuggestNextAct(beat.Acts, act);

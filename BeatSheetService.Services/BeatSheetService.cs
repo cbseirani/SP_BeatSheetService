@@ -43,7 +43,7 @@ public class BeatSheetService(IBeatSheetRepository beatSheetRepository, ILogger<
         await Get(beatSheetId); // validate
         
         logger.LogInformation($"Updating beat sheet {beatSheetId}");
-        beatSheet.Id = beatSheetId;
+        beatSheet.Id = beatSheetId.ToString();
         beatSheet = await beatSheetRepository.Update(beatSheet);
         logger.LogInformation($"Updated beat sheet {beatSheetId}");
         return beatSheet;

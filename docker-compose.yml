@@ -1,0 +1,6 @@
+﻿services:
+  beatsheetservice:
+    image: beatsheetservice
+    build:
+      context: .
+      dockerfile: BeatSheetService/Dockerfile
