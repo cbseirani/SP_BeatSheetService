@@ -14,9 +14,9 @@ public interface IBeatSheetRepository
 
 }
 
-public class BeatSheetRepository(IMongoDatabase database) : IBeatSheetRepository
+public class BeatSheetRepository() : IBeatSheetRepository
 {
-    private readonly IMongoCollection<BeatSheet> _beatSheetCollection = database.GetCollection<BeatSheet>("BeatSheets");
+    private readonly IMongoCollection<BeatSheet> _beatSheetCollection = null;//database.GetCollection<BeatSheet>("BeatSheets");
 
     public async Task<IEnumerable<BeatSheetDto>> List()
     {

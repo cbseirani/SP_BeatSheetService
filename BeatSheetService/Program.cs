@@ -1,7 +1,9 @@
+using System.Reflection;
 using BeatSheetService.Extensions;
 using BeatSheetService.Middleware;
 using BeatSheetService.Repositories;
 using BeatSheetService.Services;
+using Microsoft.OpenApi.Models;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,7 +34,21 @@ builder.Services.AddSingleton<IBeatSheetRepository, BeatSheetRepository>();
 // register controllers and swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Beatsheet Microservice", 
+        Version = "v1",
+        Description = "Allows creators to structure their content into a 'beat sheet,' a storytelling tool used to outline various elements like scenes, dialogues, or musical cues."
+    });
+    
+    // Include the XML comments file
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+});
 
 var app = builder.Build();
 
