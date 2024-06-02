@@ -1,9 +1,10 @@
 using System.Reflection;
+using System.Text.Json.Serialization;
 using BeatSheetService.Extensions;
 using BeatSheetService.Middleware;
 using BeatSheetService.Repositories;
 using BeatSheetService.Services;
-using Microsoft.AspNetCore.Mvc;
+using BeatSheetService.Services.Ai;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
@@ -22,7 +23,6 @@ Log.Logger = new LoggerConfiguration()
 // register logger and configuration for DI
 builder.Services.AddSingleton(Log.Logger);
 builder.Services.AddSingleton(typeof(IConfiguration), builder.Configuration);
-builder.Services.Configure<ApiBehaviorOptions>(x => x.SuppressModelStateInvalidFilter = true);
 
 // configure and register mongo DB beat sheet collection for DI
 builder.Services.ConfigureDatabase(builder.Configuration);
@@ -35,7 +35,7 @@ builder.Services.AddSingleton<IAiService, AiService>();
 builder.Services.AddSingleton<IBeatSheetRepository, BeatSheetRepository>();
 
 // register controllers and swagger
-builder.Services.AddControllers(options => { options.AllowEmptyInputInBodyModelBinding = true; });
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -50,6 +50,11 @@ builder.Services.AddSwaggerGen(c =>
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);
+});
+
+builder.Services.AddMvc().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 });
 
 var app = builder.Build();

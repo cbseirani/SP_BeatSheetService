@@ -1,30 +1,46 @@
 ﻿
 // generated with copilot
 
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
 namespace BeatSheetService.Common;
 
 public class BeatSheetDto
 {
-    public Guid? Id { get; set; } // Unique identifier
-    public string? Title { get; set; } // Title of the beat sheet
-    public List<BeatDto>? Beats { get; set; } // List of beats
+    [ValidateNever]
+    public Guid Id { get; set; } // Unique identifier
+    [ValidateNever]
+    public string Title { get; set; } // Title of the beat sheet
+    [ValidateNever]
+    public List<BeatDto> Beats { get; set; } = new(); // List of beats
 }
 
 public class BeatDto
 {
-    public Guid? Id { get; set; } // Unique identifier
-    public string? Description { get; set; } // Description of the beat
+    [ValidateNever]
+    public Guid Id { get; set; } // Unique identifier
+    [ValidateNever]
+    public string Description { get; set; } // Description of the beat
+    [ValidateNever]
     public DateTimeOffset? Timestamp { get; set; } // Timestamp of when the beat was created or modified
-    public List<ActDto>? Acts { get; set; } // List of acts associated with the beat
-    public BeatDto? SuggestedNextBeat { get; set; } // AI suggested next Beat
+    [ValidateNever]
+    public List<ActDto> Acts { get; set; } = new(); // List of acts associated with the beat
+    [ValidateNever]
+    public BeatDto SuggestedNextBeat { get; set; } // AI suggested next Beat
 }
 
 public class ActDto
 {
-    public Guid? Id { get; set; } // Unique identifier
-    public string? Description { get; set; } // Description of the act
+    [ValidateNever]
+    public Guid Id { get; set; } // Unique identifier
+    [ValidateNever]
+    public string Description { get; set; } // Description of the act
+    [ValidateNever]
     public DateTimeOffset? Timestamp { get; set; } // Timestamp of when the act was created or modified
-    public int? Duration { get; set; } // Duration of the act in seconds
-    public string? CameraAngle { get; set; } // Description of the camera angle for the act
-    public ActDto? SuggestedNextAct { get; set; } // AI suggested next Act
+    [ValidateNever]
+    public int Duration { get; set; } // Duration of the act in seconds
+    [ValidateNever]
+    public string CameraAngle { get; set; } // Description of the camera angle for the act
+    [ValidateNever]
+    public ActDto SuggestedNextAct { get; set; } // AI suggested next Act
 }

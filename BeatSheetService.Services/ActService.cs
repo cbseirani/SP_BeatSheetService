@@ -1,4 +1,5 @@
 ﻿using BeatSheetService.Common;
+using BeatSheetService.Services.Ai;
 using Microsoft.Extensions.Logging;
 
 namespace BeatSheetService.Services;
@@ -50,17 +51,17 @@ public class ActService(IBeatService beatService, IAiService aiService, ILogger<
         
         logger.LogInformation($"Deleting act {actId}");
         beat.Acts.Remove(existingAct);
-        await beatService.Update((Guid)beatSheet.Id, (Guid)beat.Id, beat);
+        await beatService.Update(beatSheet.Id, beat.Id, beat);
     }
 
     private async Task<ActDto> AddActAndSuggestNextAct(BeatSheetDto beatSheet, BeatDto beat, ActDto act)
     {
         act.Timestamp ??= DateTimeOffset.UtcNow;
         beat.Acts.Add(act);
-        await beatService.Update((Guid)beatSheet.Id, (Guid)beat.Id, beat);
+        await beatService.Update(beatSheet.Id, beat.Id, beat);
         
         logger.LogInformation("Suggesting next act");
-        act.SuggestedNextAct = await aiService.SuggestNextAct();
+        act.SuggestedNextAct = await aiService.SuggestNextAct(beat.Acts, act);
 
         return act;
     }

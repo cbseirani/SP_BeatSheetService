@@ -1,4 +1,5 @@
 ﻿using BeatSheetService.Common;
+using BeatSheetService.Services.Ai;
 using Microsoft.Extensions.Logging;
 
 namespace BeatSheetService.Services;
@@ -31,6 +32,7 @@ public class BeatService(IBeatSheetService beatSheetService, IAiService aiServic
         logger.LogInformation("Creating beat");
         beat.Id = Guid.NewGuid();
         beat.Acts = new List<ActDto>();
+        
         return await AddBeatAndSuggestNextBeat(beatSheet, beat);
     }
     
@@ -57,10 +59,10 @@ public class BeatService(IBeatSheetService beatSheetService, IAiService aiServic
     {
         beat.Timestamp ??= DateTimeOffset.UtcNow;
         beatSheet.Beats.Add(beat);
-        await beatSheetService.Update((Guid)beatSheet.Id, beatSheet);
+        await beatSheetService.Update(beatSheet.Id, beatSheet);
         
         logger.LogInformation("Suggesting next beat");
-        beat.SuggestedNextBeat = await aiService.SuggestNextBeat();
+        beat.SuggestedNextBeat = await aiService.SuggestNextBeat(beatSheet.Beats, beat);
         
         return beat;
     }

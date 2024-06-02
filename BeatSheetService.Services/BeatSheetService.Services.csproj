@@ -10,4 +10,8 @@
       <ProjectReference Include="..\BeatSheetService.Repositories\BeatSheetService.Repositories.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.ML" Version="3.0.1" />
+    </ItemGroup>
+
 </Project>
