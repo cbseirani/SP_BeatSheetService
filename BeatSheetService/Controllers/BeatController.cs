@@ -1,29 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BeatSheetService.Common;
+using BeatSheetService.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BeatSheetService.Controllers;
 
 [ApiController]
 [Route("beatsheet/{beatSheetId}/beat")]
-public class BeatController() : ControllerBase
+public class BeatController(IBeatService beatService) : ControllerBase
 {
+    /// <summary>
+    /// Add a beat to a specific beat sheet.
+    /// </summary>
     [HttpPost]
-    public IActionResult AddBeat(Guid beatSheetId, [FromBody] int beat)
-    {
-        // Implement logic to add a beat to the specified beat sheet
-        return Ok();
-    }
+    public Task<BeatDto> Create(Guid beatSheetId, [FromBody] BeatDto beat) =>
+        beatService.Create(beatSheetId, beat);
 
+    /// <summary>
+    /// Update a beat in a specific beat sheet.
+    /// </summary>
     [HttpPut("{beatId}")]
-    public IActionResult UpdateBeat(Guid beatSheetId, Guid beatId, [FromBody] int updatedBeat)
-    {
-        // Implement logic to update a beat in the specified beat sheet
-        return Ok();
-    }
+    public Task<BeatDto> Update(Guid beatSheetId, Guid beatId, [FromBody] BeatDto beat) =>
+        beatService.Update(beatSheetId, beatId, beat);
 
+    /// <summary>
+    /// Delete a beat from a specific beat sheet.
+    /// </summary>
     [HttpDelete("{beatId}")]
-    public IActionResult DeleteBeat(Guid beatSheetId, Guid beatId)
-    {
-        // Implement logic to delete a beat from the specified beat sheet
-        return Ok();
-    }
+    public void Delete(Guid beatSheetId, Guid beatId) => 
+        beatService.Delete(beatSheetId, beatId);
 }

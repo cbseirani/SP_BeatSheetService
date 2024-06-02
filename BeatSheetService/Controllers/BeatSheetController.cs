@@ -1,39 +1,45 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BeatSheetService.Common;
+using Microsoft.AspNetCore.Mvc;
 using BeatSheetService.Services;
 
-namespace BeatSheetService.Controllers
+namespace BeatSheetService.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class BeatSheetController(IBeatSheetService beatSheetService) : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class BeatSheetController(IBeatSheetService beatSheetService) : ControllerBase
-    {
-        private readonly IBeatSheetService _beatSheetService = beatSheetService;
+    /// <summary>
+    /// List all beat sheets.
+    /// </summary>
+    [HttpGet]
+    public Task<IEnumerable<BeatSheetDto>> List() => 
+        beatSheetService.List();
 
-        [HttpPost]
-        public IActionResult Create([FromBody] int beatSheet) => Ok();
+    /// <summary>
+    /// Retrieve a beat sheet by its ID.
+    /// </summary>
+    [HttpGet("{beatSheetId:guid}")]
+    public Task<BeatSheetDto> Get(Guid beatSheetId) => 
+        beatSheetService.Get(beatSheetId);
+    
+    /// <summary>
+    /// Create a new beat sheet.
+    /// </summary>
+    [HttpPost]
+    public Task<BeatSheetDto> Create([FromBody] BeatSheetDto beatSheet) => 
+        beatSheetService.Create(beatSheet);
 
-        [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
-        {
-            return Ok();
-        }
+    /// <summary>
+    /// Update a beat sheet by its ID.
+    /// </summary>
+    [HttpPut("{beatSheetId:guid}")]
+    public Task<BeatSheetDto> Update(Guid beatSheetId, [FromBody] BeatSheetDto beatSheet) =>
+        beatSheetService.Update(beatSheetId, beatSheet);
 
-        [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody] int updatedBeatSheet)
-        {
-            return Ok();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
-        {
-            return Ok();
-        }
-
-        [HttpGet]
-        public IActionResult List()
-        {
-            return Ok();
-        }
-    }
+    /// <summary>
+    /// Delete a beat sheet by its ID.
+    /// </summary>
+    [HttpDelete("{id:guid}")]
+    public void Delete(Guid beatSheetId) => 
+        beatSheetService.Delete(beatSheetId);
 }

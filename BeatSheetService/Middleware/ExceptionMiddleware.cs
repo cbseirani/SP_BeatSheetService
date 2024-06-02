@@ -1,35 +1,39 @@
 ﻿using System.Net;
 using System.Text.Json;
+using BeatSheetService.Common;
 
 namespace BeatSheetService.Middleware;
 
-public class ExceptionMiddleware(RequestDelegate next)
+public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
 {
-    public async Task InvokeAsync(HttpContext context)
+    public async Task Invoke(HttpContext context)
     {
         try
         {
             await next(context);
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            await HandleExceptionAsync(context, ex);
+            await HandleException(context, e);
         }
     }
 
-    private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private Task HandleException(HttpContext context, Exception exception)
     {
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-        var errorResponse = new
+        var statusCode = exception switch
         {
-            Message = "An error occurred while processing your request.",
-            ExceptionMessage = exception.Message,
-            StackTrace = exception.StackTrace
+            ValidationException => ValidationException.StatusCode,
+            NotFoundException => NotFoundException.StatusCode,
+            _ => (int)HttpStatusCode.InternalServerError
         };
 
-        await context.Response.WriteAsync(JsonSerializer.Serialize(errorResponse));
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = statusCode;
+        
+        logger.LogError(exception, "Exception thrown {exceptionType} - API responded with {status}",
+            exception.GetType(), statusCode);
+
+        return context.Response.WriteAsync(JsonSerializer.Serialize(exception.Message));
     }
 }
 
