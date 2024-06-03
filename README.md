@@ -28,6 +28,12 @@ You can now navigate to the url to see the swagger documentation and utilize the
 ![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/3ef30e69-7258-4efa-9fa0-b627ad27ef88)
 
 
+If you want to connect to the mongodb database with another mongodb client the connection string is: `mongodb://root:example@localhost:27017`
+
+![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/a612e80b-ea73-4262-b3b2-69fd6e8a8df2)
+
+
+
 ## Local Development
 I use Rider IDE for .Net and C# development which is paid only; you can get a free 30-day trial: https://www.jetbrains.com/rider/
 
