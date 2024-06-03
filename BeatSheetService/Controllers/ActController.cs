@@ -28,6 +28,6 @@ public class ActController(IActService actService) : ControllerBase
     /// Delete an act from a specific beat.
     /// </summary>
     [HttpDelete("{actId}")]
-    public void Delete(Guid beatSheetId, Guid beatId, Guid actId) => 
+    public Task Delete(Guid beatSheetId, Guid beatId, Guid actId) => 
         actService.Delete(beatSheetId, beatId, actId);
 }

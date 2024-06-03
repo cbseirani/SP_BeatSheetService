@@ -9,7 +9,7 @@ public interface IBeatService
     Task<(BeatSheetDto, BeatDto)> Get(Guid beatSheetId, Guid beatId);
     Task<BeatDto> Create(Guid beatSheetId, BeatDto beat);
     Task<BeatDto> Update(Guid beatSheetId, Guid beatId, BeatDto beat);
-    void Delete(Guid beatSheetId, Guid beatId);
+    Task Delete(Guid beatSheetId, Guid beatId);
 }
 
 public class BeatService(IBeatSheetService beatSheetService, IAiService aiService, ILogger<BeatService> logger) : IBeatService
@@ -18,7 +18,7 @@ public class BeatService(IBeatSheetService beatSheetService, IAiService aiServic
     {
         logger.LogInformation($"Getting beat {beatId}");
         var beatSheet = await beatSheetService.Get(beatSheetId);
-        var beat = beatSheet.Beats.FirstOrDefault(x => x.Id.Equals(beatId));
+        var beat = beatSheet.Beats.FirstOrDefault(x => x.Id.Equals(beatId.ToString()));
         if (beat is null)
             throw new NotFoundException($"Beat {beatId} on beat sheet {beatSheetId} not found!");
 
@@ -46,7 +46,7 @@ public class BeatService(IBeatSheetService beatSheetService, IAiService aiServic
         return await AddBeatAndSuggestNextBeat(beatSheet, beat);
     }
     
-    public async void Delete(Guid beatSheetId, Guid beatId)
+    public async Task Delete(Guid beatSheetId, Guid beatId)
     {
         var (beatSheet, existingBeat) = await Get(beatSheetId, beatId);
         

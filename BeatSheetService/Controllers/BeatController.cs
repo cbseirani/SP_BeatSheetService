@@ -28,6 +28,6 @@ public class BeatController(IBeatService beatService) : ControllerBase
     /// Delete a beat from a specific beat sheet.
     /// </summary>
     [HttpDelete("{beatId}")]
-    public void Delete(Guid beatSheetId, Guid beatId) => 
+    public Task Delete(Guid beatSheetId, Guid beatId) => 
         beatService.Delete(beatSheetId, beatId);
 }

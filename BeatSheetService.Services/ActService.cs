@@ -18,7 +18,7 @@ public class ActService(IBeatService beatService, IAiService aiService, ILogger<
     {
         logger.LogInformation($"Getting act {actId}");
         var (beatSheet, beat) = await beatService.Get(beatSheetId, beatId);
-        var act = beat.Acts.FirstOrDefault(x => x.Id.Equals(actId));
+        var act = beat.Acts.FirstOrDefault(x => x.Id.Equals(actId.ToString()));
         if (act is null)
             throw new NotFoundException($"Act {actId} on beat {beatId} on beat sheet {beatSheetId} not found!");
 

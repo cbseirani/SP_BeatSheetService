@@ -22,6 +22,6 @@ public class Act
     public Guid Id { get; set; } // Unique identifier
     public string Description { get; set; } // Description of the act
     public DateTimeOffset Timestamp { get; set; } // Timestamp of when the act was created or modified
-    public int Duration { get; set; } // Duration of the act in seconds
+    public float Duration { get; set; } // Duration of the act in seconds
     public string CameraAngle { get; set; } // Description of the camera angle for the act
 }

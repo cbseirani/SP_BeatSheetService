@@ -13,7 +13,7 @@ public interface IBeatSheetService
     Task Delete(Guid beatSheetId);
 }
 
-public class BeatSheetService(IBeatSheetRepository beatSheetRepository, ILogger<BeatSheetService> logger) : IBeatSheetService
+public class BeatSheetServiceX(IBeatSheetRepository beatSheetRepository, ILogger<BeatSheetServiceX> logger) : IBeatSheetService
 {
     public Task<IEnumerable<BeatSheetDto>> List() => beatSheetRepository.List();
     
@@ -36,7 +36,6 @@ public class BeatSheetService(IBeatSheetRepository beatSheetRepository, ILogger<
         logger.LogInformation($"Beat sheet {beatSheet.Id} created");
         return beatSheet;
     }
-        
     
     public async Task<BeatSheetDto> Update(Guid beatSheetId, BeatSheetDto beatSheet)
     {

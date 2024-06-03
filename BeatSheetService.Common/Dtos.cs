@@ -54,7 +54,7 @@ public class ActDto
     
     [ValidateNever]
     [LoadColumn(1)]
-    public int Duration { get; set; } // Duration of the act in seconds
+    public float Duration { get; set; } // Duration of the act in seconds
     
     [ValidateNever]
     [LoadColumn(2)]

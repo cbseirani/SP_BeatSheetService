@@ -28,7 +28,7 @@ builder.Services.AddSingleton(typeof(IConfiguration), builder.Configuration);
 builder.Services.ConfigureDatabase(builder.Configuration);
 
 // register services/repositories for DI
-builder.Services.AddTransient<IBeatSheetService, BeatSheetService.Services.BeatSheetService>();
+builder.Services.AddTransient<IBeatSheetService, BeatSheetServiceX>();
 builder.Services.AddTransient<IBeatService, BeatService>();
 builder.Services.AddTransient<IActService, ActService>();
 builder.Services.AddSingleton<IAiService, AiService>();
