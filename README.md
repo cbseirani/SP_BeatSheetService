@@ -1,9 +1,36 @@
-BeatSheetService
+# BeatSheetService
+N-tier microservice that allows creators to structure their content into a "beat sheet," a storytelling tool used to outline various elements like scenes, dialogues, or musical cues.
 
-- Docker
-- MongoDb
-- DockerCompose
-- n-teir .Net 8 Web APi
-- swagger
-- url
-- how to view code: open .sln file with visual studio community edition or rider ides for the best reviewing/debugging experience but you can view the files with visual studio code.
+Written with `.Net 8` and `C#` using a `MongoDb` NoSql database.
+
+You'll need `Docker Compose` in order to use the `docker-compose.yml` located in the root folder to deploy `BeatSheetService` and a mongodb in containers.
+Get Docker Desktop: https://www.docker.com/products/docker-desktop/
+
+1) open terminal and navigate to the root BeatSheetService
+2) run the command `docker-compose build beatsheetservice`:
+![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/24c265de-3803-4bca-b091-4b05b4c2b152)
+3) run the command `docker-compose up` to deploy 2 contianers, the BeatSheetService and the mongodb:
+![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/99bf231b-11d2-491b-a363-a2f7d665e53a)
+
+
+Once both the service and db has been deployed to Docker Desktop:
+
+![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/5c0ec8ab-f050-4dc6-b726-1c5b324fe46a)
+
+
+you can now navigate to the url to see the swagger documentation: http://localhost:8080/swagger
+
+![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/3ef30e69-7258-4efa-9fa0-b627ad27ef88)
+
+
+
+Unit tests covering controller and service classes: 
+
+![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/1d149470-fcfb-4e79-8c07-6daa185de1b6)
+
+
+Local Development: 
+I use Rider IDE which is paid only; you can get a free 30-day trial: https://www.jetbrains.com/rider/
+Otherwise you can view the code using Visual Studio Community Edition: https://visualstudio.microsoft.com/vs/community/
+
+You'll also need to install the appropriate .net sdk: https://dotnet.microsoft.com/en-us/download/dotnet/8.0
