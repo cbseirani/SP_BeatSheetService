@@ -13,7 +13,7 @@ Get Docker Desktop: https://www.docker.com/products/docker-desktop/
    
 ![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/24c265de-3803-4bca-b091-4b05b4c2b152)
 
-4) run the command `docker-compose up` to deploy 2 contianers, the BeatSheetService and mongodb:
+4) run the command `docker-compose up` to deploy 2 containers, the BeatSheetService and mongodb:
    
 ![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/99bf231b-11d2-491b-a363-a2f7d665e53a)
 
