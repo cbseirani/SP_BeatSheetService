@@ -41,6 +41,10 @@ Once you have the above dependencies, use one of the IDEs to open the `BeatSheet
 
 ![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/14c2bd23-5070-4c2c-a9a2-ca9463013e42)
 
+Be sure to supply `BeatSheetService` with the `DBCONNSTRING` environment variable in your `launchSettings.json` file; this is your mongodb conn string:
+
+![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/7386a69e-da79-413e-abab-4f202b42caef)
+
 Unit tests covering controller and service classes: 
 
 ![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/1d149470-fcfb-4e79-8c07-6daa185de1b6)
