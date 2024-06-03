@@ -14,22 +14,17 @@ public class AiService : IAiService
 {
     private PredictionEngine<BeatDto, BeatPrediction>? _beatPredictionEngine;
     private PredictionEngine<ActDto, ActPrediction>? _actPredictionEngine;
-    private bool _beatsTrained, _actsTrained;
     
     public async Task<BeatDto?> SuggestNextBeat(List<BeatDto> beats, BeatDto currentBeat)
     {
-        if(!_beatsTrained)
-            await TrainBeats(beats);
-        
+        await TrainBeats(beats);
         var suggestion = _beatPredictionEngine?.Predict(currentBeat);
         return new BeatDto { Description = suggestion.PredictedDescription };
     }
 
     public async Task<ActDto?> SuggestNextAct(List<ActDto> acts, ActDto currentAct)
     {
-        if(!_actsTrained)
-            await TrainActs(acts);
-        
+        await TrainActs(acts);
         var suggestion = _actPredictionEngine?.Predict(currentAct);
         return new ActDto
         {
@@ -54,7 +49,6 @@ public class AiService : IAiService
             
         var trainedModel = pipeline.Fit(data);
         _beatPredictionEngine = mlContext.Model.CreatePredictionEngine<BeatDto, BeatPrediction>(trainedModel);
-        _beatsTrained = true;
     }
     
     private async Task TrainActs(IEnumerable<ActDto> acts)
@@ -83,6 +77,5 @@ public class AiService : IAiService
         
         var trainedModel = pipeline.Fit(data);
         _actPredictionEngine = mlContext.Model.CreatePredictionEngine<ActDto, ActPrediction>(trainedModel);
-        _actsTrained = true;
     }
 }
