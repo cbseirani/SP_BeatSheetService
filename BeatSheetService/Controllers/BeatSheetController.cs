@@ -1,6 +1,7 @@
 ﻿using BeatSheetService.Common;
 using Microsoft.AspNetCore.Mvc;
 using BeatSheetService.Services;
+using Mapster;
 
 namespace BeatSheetService.Controllers;
 
@@ -26,15 +27,15 @@ public class BeatSheetController(IBeatSheetService beatSheetService) : Controlle
     /// Create a new beat sheet. Returns the new beat sheet.
     /// </summary>
     [HttpPost]
-    public Task<BeatSheetDto> Create([FromBody] BeatSheetDto beatSheet) => 
-        beatSheetService.Create(beatSheet);
+    public Task<BeatSheetDto> Create([FromBody] BeatSheetRequestDto beatSheet) => 
+        beatSheetService.Create(beatSheet.Adapt<BeatSheetDto>());
 
     /// <summary>
     /// Update a beat sheet by its ID. Returns the updated beat sheet.
     /// </summary>
     [HttpPut("{beatSheetId:guid}")]
-    public Task<BeatSheetDto> Update(Guid beatSheetId, [FromBody] BeatSheetDto beatSheet) =>
-        beatSheetService.Update(beatSheetId, beatSheet);
+    public Task<BeatSheetDto> Update(Guid beatSheetId, [FromBody] BeatSheetRequestDto beatSheet) =>
+        beatSheetService.Update(beatSheetId, beatSheet.Adapt<BeatSheetDto>());
 
     /// <summary>
     /// Delete a beat sheet by its ID.

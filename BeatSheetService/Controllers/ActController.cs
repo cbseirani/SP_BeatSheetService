@@ -1,5 +1,6 @@
 ﻿using BeatSheetService.Common;
 using BeatSheetService.Services;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeatSheetService.Controllers;
@@ -13,9 +14,9 @@ public class ActController(IActService actService) : ControllerBase
     /// Returns the new act and the suggested next act.
     /// </summary>
     [HttpPost]
-    public async Task<ActResponseDto> Create(Guid beatSheetId, Guid beatId, [FromBody] ActDto act)
+    public async Task<ActResponseDto> Create(Guid beatSheetId, Guid beatId, [FromBody] ActRequestDto act)
     {
-        var (newAct, suggestedAct) = await actService.Create(beatSheetId, beatId, act);
+        var (newAct, suggestedAct) = await actService.Create(beatSheetId, beatId, act.Adapt<ActDto>());
         return new ActResponseDto
         {
             Act = newAct,
@@ -28,10 +29,10 @@ public class ActController(IActService actService) : ControllerBase
     /// Returns the updated act and the suggested next act.
     /// </summary>
     [HttpPut("{actId}")]
-    public async Task<ActResponseDto> Update(Guid beatSheetId, Guid beatId, Guid actId, [FromBody] ActDto act)
+    public async Task<ActResponseDto> Update(Guid beatSheetId, Guid beatId, Guid actId, [FromBody] ActRequestDto act)
     {
-        var (updatedAct, suggestedAct) = await actService.Update(beatSheetId, beatId, actId, act);
-        return new ActResponseDto()
+        var (updatedAct, suggestedAct) = await actService.Update(beatSheetId, beatId, actId, act.Adapt<ActDto>());
+        return new ActResponseDto
         {
             Act = updatedAct,
             SuggestedNextAct = suggestedAct
