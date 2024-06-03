@@ -25,7 +25,8 @@ Once both the service and db has been deployed to Docker Desktop:
 
 You can now navigate to the url to see the swagger documentation and utilize the UI: http://localhost:8080/swagger
 
-![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/3ef30e69-7258-4efa-9fa0-b627ad27ef88)
+![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/c3137552-f57a-4c73-a92c-7549f0d33187)
+
 
 
 If you want to connect to the database with another mongodb client, the connection string is: `mongodb://root:example@localhost:27017`
