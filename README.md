@@ -5,7 +5,7 @@ Written with `.Net 8` and `C#` using a `MongoDb` NoSql database.
 
 ## Running Locally
 
-You'll need `Docker Compose` in order to use the `docker-compose.yml` located in the root folder to deploy `BeatSheetService` and `MongoDB` in containers.
+You'll need `Docker Compose` in order to use the `docker-compose.yml` file located in the root folder to deploy `BeatSheetService` and `MongoDB` in containers.
 Get Docker Desktop: https://www.docker.com/products/docker-desktop/
 
 1) open terminal and navigate to the root BeatSheetService
