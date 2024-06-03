@@ -7,9 +7,9 @@ services:
       context: .
       dockerfile: BeatSheetService/Dockerfile
     environment:
-      - DBCONNSTRING=mongodb://mongo:27017
+      - DBCONNSTRING=mongodb://root:example@mongo:27017
     ports:
-      - "80:80"
+      - "8080:8080"
     depends_on:
       - mongo
 
