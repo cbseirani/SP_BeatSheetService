@@ -5,15 +5,15 @@ Written with `.Net 8` and `C#` using a `MongoDb` NoSql database.
 
 ## Running Locally
 
-You'll need `Docker Compose` in order to use the `docker-compose.yml` located in the root folder to deploy `BeatSheetService` and a mongodb in containers.
+You'll need `Docker Compose` in order to use the `docker-compose.yml` file located in the root folder to deploy `BeatSheetService` and `MongoDB` in containers.
 Get Docker Desktop: https://www.docker.com/products/docker-desktop/
 
-1) open terminal and navigate to the root BeatSheetService
+1) open terminal and navigate to the root folder containing `BeatSheetService.sln` and `docker-compose.yml`
 2) run the command `docker-compose build beatsheetservice`:
    
 ![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/24c265de-3803-4bca-b091-4b05b4c2b152)
 
-4) run the command `docker-compose up` to deploy 2 contianers, the BeatSheetService and the mongodb:
+4) run the command `docker-compose up` to deploy 2 containers, the BeatSheetService and mongodb:
    
 ![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/99bf231b-11d2-491b-a363-a2f7d665e53a)
 
@@ -26,6 +26,12 @@ Once both the service and db has been deployed to Docker Desktop:
 You can now navigate to the url to see the swagger documentation and utilize the UI: http://localhost:8080/swagger
 
 ![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/3ef30e69-7258-4efa-9fa0-b627ad27ef88)
+
+
+If you want to connect to the database with another mongodb client, the connection string is: `mongodb://root:example@localhost:27017`
+
+![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/a612e80b-ea73-4262-b3b2-69fd6e8a8df2)
+
 
 
 ## Local Development
