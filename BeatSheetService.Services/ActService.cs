@@ -7,8 +7,8 @@ namespace BeatSheetService.Services;
 public interface IActService
 {
     Task<(BeatSheetDto, BeatDto, ActDto)> Get(Guid beatSheetId, Guid beatId, Guid actId);
-    Task<ActDto> Create(Guid beatSheetId, Guid beatId, ActDto act);
-    Task<ActDto> Update(Guid beatSheetId, Guid beatId, Guid actId, ActDto act);
+    Task<(ActDto, ActDto?)> Create(Guid beatSheetId, Guid beatId, ActDto act);
+    Task<(ActDto, ActDto?)> Update(Guid beatSheetId, Guid beatId, Guid actId, ActDto act);
     Task Delete(Guid beatSheetId, Guid beatId, Guid actId);
 }
 
@@ -25,7 +25,7 @@ public class ActService(IBeatService beatService, IAiService aiService, ILogger<
         return (beatSheet, beat, act);
     }
     
-    public async Task<ActDto> Create(Guid beatSheetId, Guid beatId, ActDto act)
+    public async Task<(ActDto, ActDto?)> Create(Guid beatSheetId, Guid beatId, ActDto act)
     {
         var (beatSheet, beat) = await beatService.Get(beatSheetId, beatId);
 
@@ -35,13 +35,13 @@ public class ActService(IBeatService beatService, IAiService aiService, ILogger<
         return await AddActAndSuggestNextAct(beatSheet, beat, act);
     }
     
-    public async Task<ActDto> Update(Guid beatSheetId, Guid beatId, Guid actId, ActDto act)
+    public async Task<(ActDto, ActDto?)> Update(Guid beatSheetId, Guid beatId, Guid actId, ActDto act)
     {
         var (beatSheet, beat, existingAct) = await Get(beatSheetId, beatId, actId);
 
         logger.LogInformation($"Updating act {actId}");
         beat.Acts.Remove(existingAct);
-
+        act.Id = existingAct.Id;
         return await AddActAndSuggestNextAct(beatSheet, beat, act);
     }
     
@@ -54,15 +54,15 @@ public class ActService(IBeatService beatService, IAiService aiService, ILogger<
         await beatService.Update(Guid.Parse(beatSheet.Id), Guid.Parse(beat.Id), beat);
     }
 
-    private async Task<ActDto> AddActAndSuggestNextAct(BeatSheetDto beatSheet, BeatDto beat, ActDto act)
+    private async Task<(ActDto, ActDto?)> AddActAndSuggestNextAct(BeatSheetDto beatSheet, BeatDto beat, ActDto act)
     {
         act.Timestamp = DateTimeOffset.UtcNow;
         beat.Acts.Add(act);
         await beatService.Update(Guid.Parse(beatSheet.Id), Guid.Parse(beat.Id), beat);
         
         logger.LogInformation("Suggesting next act");
-        act.SuggestedNextAct = await aiService.SuggestNextAct(beat.Acts, act);
+        var suggestedNextAct = await aiService.SuggestNextAct(beat.Acts, act);
 
-        return act;
+        return (act, suggestedNextAct);
     }
 }

@@ -15,6 +15,13 @@ public class BeatSheetDto
     public List<BeatDto> Beats { get; set; } = new(); // List of beats
 }
 
+public class BeatResponseDto
+{
+    public BeatDto? Beat { get; set; }
+    
+    public BeatDto? SuggestedNextBeat { get; set; } // AI suggested next Beat
+}
+
 public class BeatDto
 {
     [ValidateNever]
@@ -32,10 +39,13 @@ public class BeatDto
     [ValidateNever]
     [NoColumn]
     public List<ActDto> Acts { get; set; } = new(); // List of acts associated with the beat
+}
+
+public class ActResponseDto
+{
+    public ActDto? Act { get; set; }
     
-    [ValidateNever]
-    [NoColumn]
-    public BeatDto? SuggestedNextBeat { get; set; } // AI suggested next Beat
+    public ActDto? SuggestedNextAct { get; set; } // AI suggested next Act
 }
 
 public class ActDto
@@ -59,8 +69,4 @@ public class ActDto
     [ValidateNever]
     [LoadColumn(2)]
     public string CameraAngle { get; set; } // Description of the camera angle for the act
-    
-    [ValidateNever]
-    [NoColumn]
-    public ActDto? SuggestedNextAct { get; set; } // AI suggested next Act
 }

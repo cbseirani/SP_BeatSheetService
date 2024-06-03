@@ -13,16 +13,30 @@ public class ActController(IActService actService) : ControllerBase
     /// Returns the new act and the suggested next act.
     /// </summary>
     [HttpPost]
-    public Task<ActDto> Create(Guid beatSheetId, Guid beatId, [FromBody] ActDto act) =>
-        actService.Create(beatSheetId, beatId, act);
-    
+    public async Task<ActResponseDto> Create(Guid beatSheetId, Guid beatId, [FromBody] ActDto act)
+    {
+        var (newAct, suggestedAct) = await actService.Create(beatSheetId, beatId, act);
+        return new ActResponseDto
+        {
+            Act = newAct,
+            SuggestedNextAct = suggestedAct
+        };
+    }
+
     /// <summary>
     /// Update an act in a specific beat.
     /// Returns the updated act and the suggested next act.
     /// </summary>
     [HttpPut("{actId}")]
-    public Task<ActDto> Update(Guid beatSheetId, Guid beatId, Guid actId, [FromBody] ActDto act) =>
-        actService.Update(beatSheetId, beatId, actId, act);
+    public async Task<ActResponseDto> Update(Guid beatSheetId, Guid beatId, Guid actId, [FromBody] ActDto act)
+    {
+        var (updatedAct, suggestedAct) = await actService.Update(beatSheetId, beatId, actId, act);
+        return new ActResponseDto()
+        {
+            Act = updatedAct,
+            SuggestedNextAct = suggestedAct
+        };
+    }
 
     /// <summary>
     /// Delete an act from a specific beat.

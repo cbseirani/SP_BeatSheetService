@@ -16,14 +16,14 @@ public class ActControllerTests
         var beatSheetId = Guid.NewGuid();
         var beatId = Guid.NewGuid();
         var act = new ActDto { /* Initialize with test data */ };
-        _mockService.Setup(service => service.Create(beatSheetId, beatId, act)).ReturnsAsync(act);
+        _mockService.Setup(service => service.Create(beatSheetId, beatId, act)).ReturnsAsync((act, act));
 
         // Act
         var result = await CreateController().Create(beatSheetId, beatId, act);
 
         // Assert
-        var actionResult = Assert.IsType<ActDto>(result);
-        Assert.Equal(act, actionResult);
+        var actionResult = Assert.IsType<ActResponseDto>(result);
+        Assert.Equal(act, actionResult.Act);
     }
 
     [Fact]
@@ -34,14 +34,14 @@ public class ActControllerTests
         var beatId = Guid.NewGuid();
         var actId = Guid.NewGuid();
         var act = new ActDto { /* Initialize with test data */ };
-        _mockService.Setup(service => service.Update(beatSheetId, beatId, actId, act)).ReturnsAsync(act);
+        _mockService.Setup(service => service.Update(beatSheetId, beatId, actId, act)).ReturnsAsync((act, act));
 
         // Act
         var result = await CreateController().Update(beatSheetId, beatId, actId, act);
 
         // Assert
-        var actionResult = Assert.IsType<ActDto>(result);
-        Assert.Equal(act, actionResult);
+        var actionResult = Assert.IsType<ActResponseDto>(result);
+        Assert.Equal(act, actionResult.Act);
     }
 
     [Fact]

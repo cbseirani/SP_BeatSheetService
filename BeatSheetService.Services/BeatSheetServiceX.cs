@@ -39,10 +39,10 @@ public class BeatSheetServiceX(IBeatSheetRepository beatSheetRepository, ILogger
     
     public async Task<BeatSheetDto> Update(Guid beatSheetId, BeatSheetDto beatSheet)
     {
-        await Get(beatSheetId); // validate
+        var existingBeatSheet = await Get(beatSheetId); // validate
         
         logger.LogInformation($"Updating beat sheet {beatSheetId}");
-        beatSheet.Id = beatSheetId.ToString();
+        beatSheet.Id = existingBeatSheet.Id;
         beatSheet = await beatSheetRepository.Update(beatSheet);
         logger.LogInformation($"Updated beat sheet {beatSheetId}");
         return beatSheet;

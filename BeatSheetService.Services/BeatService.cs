@@ -7,8 +7,8 @@ namespace BeatSheetService.Services;
 public interface IBeatService
 {
     Task<(BeatSheetDto, BeatDto)> Get(Guid beatSheetId, Guid beatId);
-    Task<BeatDto> Create(Guid beatSheetId, BeatDto beat);
-    Task<BeatDto> Update(Guid beatSheetId, Guid beatId, BeatDto beat);
+    Task<(BeatDto, BeatDto?)> Create(Guid beatSheetId, BeatDto beat);
+    Task<(BeatDto, BeatDto?)> Update(Guid beatSheetId, Guid beatId, BeatDto beat);
     Task Delete(Guid beatSheetId, Guid beatId);
 }
 
@@ -25,24 +25,23 @@ public class BeatService(IBeatSheetService beatSheetService, IAiService aiServic
         return (beatSheet, beat);
     }
     
-    public async Task<BeatDto> Create(Guid beatSheetId, BeatDto beat)
+    public async Task<(BeatDto, BeatDto?)> Create(Guid beatSheetId, BeatDto beat)
     {
         var beatSheet = await beatSheetService.Get(beatSheetId);
         
         logger.LogInformation("Creating beat");
         beat.Id = Guid.NewGuid().ToString();
         beat.Acts = new List<ActDto>();
-        
         return await AddBeatAndSuggestNextBeat(beatSheet, beat);
     }
     
-    public async Task<BeatDto> Update(Guid beatSheetId, Guid beatId, BeatDto beat)
+    public async Task<(BeatDto, BeatDto?)> Update(Guid beatSheetId, Guid beatId, BeatDto beat)
     {
         var (beatSheet, existingBeat) = await Get(beatSheetId, beatId);
         
         logger.LogInformation($"Updating beat {beatId}");
         beatSheet.Beats.Remove(existingBeat);
-
+        beat.Id = existingBeat.Id;
         return await AddBeatAndSuggestNextBeat(beatSheet, beat);
     }
     
@@ -55,15 +54,15 @@ public class BeatService(IBeatSheetService beatSheetService, IAiService aiServic
         await beatSheetService.Update(beatSheetId, beatSheet);
     }
 
-    private async Task<BeatDto> AddBeatAndSuggestNextBeat(BeatSheetDto beatSheet, BeatDto beat)
+    private async Task<(BeatDto, BeatDto?)> AddBeatAndSuggestNextBeat(BeatSheetDto beatSheet, BeatDto beat)
     {
         beat.Timestamp = DateTimeOffset.UtcNow;
         beatSheet.Beats.Add(beat);
         await beatSheetService.Update(Guid.Parse(beatSheet.Id), beatSheet);
         
         logger.LogInformation("Suggesting next beat");
-        beat.SuggestedNextBeat = await aiService.SuggestNextBeat(beatSheet.Beats, beat);
+        var suggestedNextBeat = await aiService.SuggestNextBeat(beatSheet.Beats, beat);
         
-        return beat;
+        return (beat, suggestedNextBeat);
     }
 }
