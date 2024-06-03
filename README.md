@@ -13,17 +13,17 @@ Get Docker Desktop: https://www.docker.com/products/docker-desktop/
    
 ![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/24c265de-3803-4bca-b091-4b05b4c2b152)
 
-4) run the command `docker-compose up` to deploy 2 containers, the BeatSheetService and mongodb:
+3) run the command `docker-compose up` to deploy 2 containers, the BeatSheetService and mongodb:
    
 ![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/99bf231b-11d2-491b-a363-a2f7d665e53a)
 
 
-Once both the service and db has been deployed to Docker Desktop:
+4) Once both the service and db has been deployed to Docker Desktop:
 
 ![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/5c0ec8ab-f050-4dc6-b726-1c5b324fe46a)
 
 
-You can now navigate to the url to see the swagger documentation and utilize the UI: http://localhost:8080/swagger
+5) You can now navigate to the url to see the swagger documentation and utilize the UI: http://localhost:8080/swagger
 
 ![image](https://github.com/cbseirani/SP_BeatSheetService/assets/34148393/c3137552-f57a-4c73-a92c-7549f0d33187)
 
