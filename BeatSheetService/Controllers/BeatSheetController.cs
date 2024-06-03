@@ -23,14 +23,14 @@ public class BeatSheetController(IBeatSheetService beatSheetService) : Controlle
         beatSheetService.Get(beatSheetId);
     
     /// <summary>
-    /// Create a new beat sheet.
+    /// Create a new beat sheet. Returns the new beat sheet.
     /// </summary>
     [HttpPost]
     public Task<BeatSheetDto> Create([FromBody] BeatSheetDto beatSheet) => 
         beatSheetService.Create(beatSheet);
 
     /// <summary>
-    /// Update a beat sheet by its ID.
+    /// Update a beat sheet by its ID. Returns the updated beat sheet.
     /// </summary>
     [HttpPut("{beatSheetId:guid}")]
     public Task<BeatSheetDto> Update(Guid beatSheetId, [FromBody] BeatSheetDto beatSheet) =>
