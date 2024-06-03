@@ -1,6 +1,4 @@
-﻿version: '3.8'
-
-services:
+﻿services:
   beatsheetservice:
     image: beatsheetservice
     build:
@@ -25,4 +23,3 @@ services:
 
 volumes:
   mongodb_data:
-
