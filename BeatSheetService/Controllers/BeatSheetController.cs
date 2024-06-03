@@ -5,7 +5,7 @@ using BeatSheetService.Services;
 namespace BeatSheetService.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("beatsheet")]
 public class BeatSheetController(IBeatSheetService beatSheetService) : ControllerBase
 {
     /// <summary>
